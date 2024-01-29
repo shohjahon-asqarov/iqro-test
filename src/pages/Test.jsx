@@ -1,4 +1,4 @@
-import { Alert, Input, Modal, Progress, Result } from 'antd'
+import { Input, Modal, Progress, Result } from 'antd'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -30,6 +30,33 @@ const Test = () => {
         currentQuestion = questions.questions[index]
     }
 
+    const sendResult = () => {
+        // result sent to telegram 
+        const minut = ("0" + Math.floor((time / 60000) % 60)).slice(-2)
+        const secund = ("0" + Math.floor((time / 1000) % 60)).slice(-2)
+
+        let text = `✏️Mavzu: ${questions.owner.theme}%0A👤Ismi familiya: ${nameRef.current.input.value}%0A📱Telegram: @${usernameRef.current.input.value}%0A⏰Sarflangan vaqt: ${minut}:${secund}%0A✅To'g'ri javoblar: ${checkCorrect(myAnswers)} ta / ${10 * checkCorrect(myAnswers)}%%0A❌Noto'g'ri javoblar: ${myAnswers.length - checkCorrect(myAnswers)} ta%0A❔Jami savollar: 10 ta`
+
+        const token = "6456033575:AAFmRkIbmEwJ5RbCuc6UrP-EK42V_Zbyzvs";
+        let url = "https://api.telegram.org/bot" + token + "/sendMessage?chat_id=-1001995880798&text=";
+        let xhttp = new XMLHttpRequest();
+        xhttp.open("GET", url + `${text}`, true);
+        xhttp.send();
+
+        toast.success(`Natijangiz yuborildi!`, {
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+
+        setTelegramModal(true)
+    };
+
     const nextQuestion = (correctIndex) => {
         setRunning(true)
         if (currentQuestion) {
@@ -58,36 +85,19 @@ const Test = () => {
         return result
     }
 
+
     const showModal = () => {
         setIsModalOpen(true);
     };
-    const handleOk = () => {
-        // result sent to telegram 
-        const minut = ("0" + Math.floor((time / 60000) % 60)).slice(-2)
-        const secund = ("0" + Math.floor((time / 1000) % 60)).slice(-2)
 
-        let text = `✏️Mavzu: ${questions.owner.theme}%0A👤Ismi familiya: ${nameRef.current.input.value}%0A📱Telegram: @${usernameRef.current.input.value}%0A⏰Sarflangan vaqt: ${minut}:${secund}%0A✅To'g'ri javoblar: ${checkCorrect(myAnswers)} ta / ${10 * checkCorrect(myAnswers)}%%0A❌Noto'g'ri javoblar: ${myAnswers.length - checkCorrect(myAnswers)} ta%0A❔Jami savollar: 10 ta`
+    useEffect(() => {
+        if (questions.length !== 0) {
+            showModal()
+        }
+    }, [])
 
-        const token = "6456033575:AAFmRkIbmEwJ5RbCuc6UrP-EK42V_Zbyzvs";
-        let url = "https://api.telegram.org/bot" + token + "/sendMessage?chat_id=-1001995880798&text=";
-        let xhttp = new XMLHttpRequest();
-        xhttp.open("GET", url + `${text}`, true);
-        xhttp.send();
 
-        toast.success(`Natijangiz yuborildi!`, {
-            position: "bottom-right",
-            autoClose: 2000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
 
-        setIsModalOpen(false);
-        setTelegramModal(true)
-    };
     const handleCancel = () => {
         setIsModalOpen(false);
     };
@@ -104,8 +114,6 @@ const Test = () => {
         return () => clearInterval(interval);
     }, [running]);
 
-    const [success, setSuccess] = useState(false)
-
     useEffect(() => {
         if (checkCorrect(myAnswers) === 10) {
             setSuccess(true)
@@ -113,11 +121,16 @@ const Test = () => {
                 successVoise.current.play()
             }, 1000)
         }
+        if (myAnswers.length === 10) {
+            sendResult()
+        }
         setTimeout(() => {
             setSuccess(false)
             successVoise.current.pause()
         }, 8000)
     }, [myAnswers])
+
+    const [success, setSuccess] = useState(false)
 
     return (
         <section className='container py-10'>
@@ -161,7 +174,7 @@ const Test = () => {
                             </li>
                         </ul>
                         :
-                        <ul ul className='space-y-5'>
+                        <ul className='space-y-5'>
                             <ul>
                                 <li className='p-8 rounded-3xl bg-card-bg border border-[hsla(0,0%,87.5%,.7)] space-y-5 text-[rgba(2,11,18,.7)]'>
                                     <h2 className='text-2xl border-b pb-4 font-semibold'>Sizning natijangiz</h2>
@@ -200,13 +213,14 @@ const Test = () => {
                                         <button onClick={() => navigate('/category')} className="btn-blue">
                                             Ortga
                                         </button>
-                                        <button onClick={showModal} className="btn-blue bg-[#229ED9]">
+                                        {/* <button onClick={showModal} className="btn-blue bg-[#229ED9]">
                                             Ulashish
                                             <i className='bi bi-telegram ml-2'></i>
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </li>
                             </ul>
+                            
                             {myAnswers.map((i, index) => {
                                 return (
                                     <li data-aos='fade-left' className='p-8 rounded-3xl bg-card-bg border border-[hsla(0,0%,87.5%,.7)] space-y-5 text-[rgba(2,11,18,.7)]' key={index}>
@@ -247,7 +261,7 @@ const Test = () => {
                     } />
             }
 
-            <Modal title="Telegramga ulashish" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <Modal title="Telegramga ulashish" open={isModalOpen} onOk={handleCancel} onCancel={handleCancel}>
                 <div className='space-y-4 py-8'>
                     <Input ref={nameRef} className='py-1.5 input' size='large' prefix={<i className='bi bi-person'></i>} placeholder='Ism familiyangiz' />
                     <Input ref={usernameRef} className='py-1.5 input' size='large' prefix={<i className='bi bi-telegram'></i>} placeholder='Telegram usename' />
