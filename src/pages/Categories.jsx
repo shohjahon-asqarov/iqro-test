@@ -85,6 +85,10 @@ const Categories = () => {
                                     {
                                         value: 'Rus-tili',
                                         label: 'Rus-tili',
+                                    },
+                                    {
+                                        value: 'Matematika',
+                                        label: 'Matematika',
                                     }
                                 ]}
                             />
