@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Poppins", sans-serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: #00A89D;
+  }
+  p {
+    color: #333;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-5 lg:px-20;
+  }
+  .btn-blue {
+    @apply text-white font-medium py-3 px-6 md:py-3.5 md:px-8 rounded-full;
+    background: #00A89D;
+  }
+  .btn-card {
+    @apply bg-[#00A89D] text-white font-medium py-2 px-4 rounded-xl;
+  }
+}
+
+body {
+  overflow-y: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+div::-webkit-scrollbar {
+  display: none;
+}
+
+.progress {
+  width: 100%;
+  left: 0;
+  position: absolute !important;
+  bottom: 8px;
+  height: 8px;
+}
+
+.progress .ant-progress-bg {
+  background: #00A89D;
+  border-radius: 0px;
+}
+
+.circle-progress .ant-progress-circle-path {
+  stroke: #00A89D !important;
+}
+
+.animation-show {
+  animation: show 0.5s linear 1;
+}
+
+@keyframes show {
+  0% {
+    transform: translateX(110%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.ant-btn-primary {
+  background: #00A89D;
+}
+
+.ant-btn-primary:hover {
+  background: #035396 !important;
+}
