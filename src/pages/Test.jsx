@@ -1,31 +1,44 @@
-import { Input, Modal, Progress, Result } from 'antd'
-import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { useEffect, useRef, useState } from 'react';
 
+// antd components
+import { Input, Modal, Progress, Result } from 'antd';
+
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+// toastify
+import { toast } from 'react-toastify';
+
+// confett animation
 import useWindowSize from 'react-use/lib/useWindowSize'
 import Confetti from 'react-confetti'
 
+// happy voise
 import happyVoise from '../assets/audio/happy.mp3'
 
 const Test = () => {
     const navigate = useNavigate()
+
+    // states
     const [index, setIndex] = useState(0)
     const [myAnswers, setMyAnswers] = useState([])
     const [finish, setFinish] = useState(false)
-    const nameRef = useRef()
-    const usernameRef = useRef()
-    const successVoise = useRef()
     const [time, setTime] = useState(0);
     const [running, setRunning] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { questions } = useSelector((state) => state.questions)
+    const [success, setSuccess] = useState(false)
     const [telegramModal, setTelegramModal] = useState(false);
+
+    // refs
+    const nameRef = useRef()
+    const usernameRef = useRef()
+    const successVoise = useRef()
+
+    // for confetti animation
     const { width, height } = useWindowSize()
 
-    const { questions } = useSelector((state) => state.questions)
-
-    let currentQuestion
+    let currentQuestion;
     if (questions.length !== 0) {
         currentQuestion = questions.questions[index]
     }
@@ -85,7 +98,6 @@ const Test = () => {
         return result
     }
 
-
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -95,8 +107,6 @@ const Test = () => {
             showModal()
         }
     }, [])
-
-
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -130,7 +140,6 @@ const Test = () => {
         }, 8000)
     }, [myAnswers])
 
-    const [success, setSuccess] = useState(false)
 
     return (
         <section className='container py-10'>
@@ -213,14 +222,10 @@ const Test = () => {
                                         <button onClick={() => navigate('/category')} className="btn-blue">
                                             Ortga
                                         </button>
-                                        {/* <button onClick={showModal} className="btn-blue bg-[#229ED9]">
-                                            Ulashish
-                                            <i className='bi bi-telegram ml-2'></i>
-                                        </button> */}
                                     </div>
                                 </li>
                             </ul>
-                            
+
                             {myAnswers.map((i, index) => {
                                 return (
                                     <li data-aos='fade-left' className='p-8 rounded-3xl bg-card-bg border border-[hsla(0,0%,87.5%,.7)] space-y-5 text-[rgba(2,11,18,.7)]' key={index}>
@@ -271,7 +276,7 @@ const Test = () => {
 
             <Modal title={`Natijangizni ko'ring`} open={telegramModal} onOk={() => setTelegramModal(false)} onCancel={() => setTelegramModal(false)}>
                 <div className='flex justify-center py-10'>
-                    <a target='_blank' href='https://t.me/webking_result' className="btn-blue bg-[#229ED9]">
+                    <a rel='noreferrer' target='_blank' href='https://t.me/webking_result' className="btn-blue bg-[#229ED9]">
                         Natijalarni ko'rish
                         <i className='bi bi-telegram ml-2'></i>
                     </a>

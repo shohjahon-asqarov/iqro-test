@@ -1,31 +1,34 @@
-import React, { useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-import Navbar from './components/Navbar'
-import Hero from './pages/Hero'
-import Categories from './pages/Categories'
-import Test from './pages/Test'
+// components
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
 
-import 'bootstrap-icons/font/bootstrap-icons.css'
+// pages
+import Categories from './pages/Categories';
+import Test from './pages/Test';
 
+// bootstrap icons
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+// toastify
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import ReactGA from "react-ga4";
-
+// aos animation
 import AOS from 'aos';
-// import 'aos/dist/aos.css';
+import 'aos/dist/aos.css';
 
-import './css/loader.css'
-import useGaTracker from './useGaTracker'
-
+// css for loader
+import './css/loader.css';
 
 const App = () => {
+
+  // initialize aos
   useEffect(() => {
     AOS.init()
   }, [])
-
-  useGaTracker()
 
   return (
     <div>

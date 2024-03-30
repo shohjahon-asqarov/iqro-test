@@ -1,14 +1,24 @@
+import { useEffect, useState } from 'react';
+
+// firebase 
 import {
     query,
     collection,
     onSnapshot,
 } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
 import { db } from '../api/firebase';
+
+// redux
 import { useDispatch } from 'react-redux';
 import { setQuestionsState } from '../store/slices/questionsSlice';
+
+// react router
 import { useNavigate } from 'react-router-dom';
+
+// loader
 import Loader from '../components/Loader';
+
+// antd components
 import { Empty, Select } from 'antd';
 
 const Categories = () => {
@@ -17,9 +27,7 @@ const Categories = () => {
     const navigate = useNavigate()
 
     const [loader, setLoader] = useState(true)
-
     const [questions, setQuestions] = useState([])
-
     const [selectedCategory, setSelectedCategory] = useState('All')
 
     const fetchData = async () => {
@@ -34,10 +42,6 @@ const Categories = () => {
         });
     }
 
-    useEffect(() => {
-        fetchData()
-    }, [])
-
     const startTest = (questions) => {
         dispatch(setQuestionsState(questions))
         navigate('/test')
@@ -48,6 +52,10 @@ const Categories = () => {
     };
 
     const found = questions.find(question => question.owner.category === selectedCategory)
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     return (
         <div className='container pb-16'>
@@ -120,6 +128,7 @@ const Categories = () => {
                                 )
                             })}
                         </ul>
+
                         {!found && selectedCategory !== 'All' && <Empty description='Test mavjud emas' />}
                     </div>
             }
