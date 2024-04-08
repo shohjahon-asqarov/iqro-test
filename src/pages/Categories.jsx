@@ -79,24 +79,12 @@ const Categories = () => {
                                         label: 'Barchasi',
                                     },
                                     {
-                                        value: 'English',
-                                        label: 'English',
+                                        value: 'Front-end',
+                                        label: 'Front-end',
                                     },
                                     {
-                                        value: 'Fizika',
-                                        label: 'Fizika',
-                                    },
-                                    {
-                                        value: 'Ona-tili',
-                                        label: 'Ona-tili',
-                                    },
-                                    {
-                                        value: 'Rus-tili',
-                                        label: 'Rus-tili',
-                                    },
-                                    {
-                                        value: 'Matematika',
-                                        label: 'Matematika',
+                                        value: 'Back-end',
+                                        label: 'Back-end',
                                     }
                                 ]}
                             />
